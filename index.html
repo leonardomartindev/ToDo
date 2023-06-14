@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="style.css">
+    <title>To Do site</title>
+</head>
+<body>
+    <div class="top-bar"></div>
+    <div class="container-main">
+            <form class="form-input-btn">
+                <input class="input-task" type="text" placeholder="Adicionar uma tarefa">
+                <button type="submit"><i class="fa-solid fa-plus"></i></button>
+            </form>
+            <div class="main-content-container">
+
+                <div class="container-span">
+                    <p >Tarefas criadas <span class="qtd-tasks">3</span></p>
+                    <p >Tarefas concluídas <span class="qtd-finish-tasks">0 de 0</span></p>
+                </div>
+                <div class="tasks">
+                    <div class="task">
+                        <div class="circle-name-container">
+                            <div class="circle "></div>
+                            <p class="name-task">Estudar JavaScript</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fa-solid fa-pen"></i>
+                            <i class="fa-solid fa-trash"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
