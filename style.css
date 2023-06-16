@@ -98,7 +98,7 @@ body{
     display: flex;
     justify-content: space-between;
     padding: 0 1rem;
-    padding-bottom: 7rem;
+    padding-bottom: 5rem;
     flex-wrap: wrap;
     gap: 1rem;
 }
@@ -223,6 +223,25 @@ body{
     gap: 2rem;
     font-size: 2rem;
 }
+
+.not-task-container{
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    align-items: center;
+    font-size: 1.3rem;
+    color: #7C7C7C;
+}
+
+.not-task-img{
+    /* background-color: red; */
+    width: 28vw;
+    height: auto;
+    background-color: var(--primary);
+    border-radius: 20px;
+}
+
 .hide{
     display: none;
 }

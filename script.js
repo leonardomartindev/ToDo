@@ -8,6 +8,7 @@ const popup = document.querySelector(".popup");
 const completedTasksContainer = document.querySelector(".completed-tasks");
 const toggleArrow = document.querySelector(".toggle-arrow");
 const toggleTasksBtn = document.querySelector(".toggle-tasks");
+const notTaskContainer = document.querySelector(".not-task-container")
 
 // Declaração de arrays que vai conter os objetos que serão cada uma das tasks
 const tasks = [];
@@ -56,7 +57,7 @@ addBtn.addEventListener("click", (e) => {
   if (!valueInput) return;
 
   addTask(valueInput);
-  input.value = ""; // Limpa o campo de entrada
+  input.value = "";
 });
 
 function addTask(name, status) {
@@ -64,15 +65,28 @@ function addTask(name, status) {
     name: name,
     finished: status || false
   };
-
   tasks.push(newTask);
   createTasks();
+  updateTaskContainers();
+}
+
+function updateTaskContainers() {
+  if (tasks.length > 0) {
+    notTaskContainer.classList.add("hide");
+    toggleTasksBtn.classList.remove("hide");
+  } else {
+    notTaskContainer.classList.remove("hide");
+    toggleTasksBtn.classList.add("hide");
+  }
 }
 
 function createTasks() {
   tasksHtmlContainer.innerHTML = ""; // Limpa o conteúdo anterior
 
-  tasks.forEach((task, index) => {
+  const unfinishedTasks = tasks.filter((task) => !task.finished);
+  qtdTasks.innerText = unfinishedTasks.length; // Atualiza a contagem de tarefas não concluídas
+
+  tasks.forEach((task) => {
     const taskElement = createTask(task.name);
     if (task.finished) {
       taskElement.querySelector(".circle").classList.add("completed-circle");
@@ -86,6 +100,7 @@ function createTasks() {
     // Event listener para marcar/desmarcar como concluída
     const circle = taskElement.querySelector(".circle");
     circle.addEventListener("click", () => {
+      const wasFinished = task.finished; // Armazena o status anterior da tarefa
       task.finished = !task.finished;
       taskElement.classList.toggle("hide");
       circle.classList.toggle("completed-circle");
@@ -93,11 +108,16 @@ function createTasks() {
 
       if (task.finished) {
         completedTasksContainer.appendChild(taskElement);
+        qtdTasks.innerText = parseInt(qtdTasks.innerText) - 1;
+        qtdFinishTasks.innerText = `${tasks.filter((task) => task.finished).length} de ${tasks.length}`;
       } else {
         tasksHtmlContainer.appendChild(taskElement);
+        qtdTasks.innerText = parseInt(qtdTasks.innerText) + 1;
+        qtdFinishTasks.innerText = `${tasks.filter((task) => task.finished).length} de ${tasks.length}`;
       }
 
       updateCompletedTasks(); // Atualiza as tarefas concluídas
+      updateTaskContainers(); // Atualiza os contêineres das tarefas
     });
 
     // Event listener para editar tarefa
@@ -108,14 +128,19 @@ function createTasks() {
       const namePTask = taskElement.querySelector(".name-task");
       editTask.value = namePTask.innerText;
       popup.classList.remove("hide");
-      popup.addEventListener("click", (e) => {
-        if (e.target.classList.contains("popup")) {
-          popup.classList.add("hide");
-        }
-        if (e.target.classList.contains("fa-square-check")) {
+      editTask.focus()
+      // Event listener para confirmar a edição ao pressionar enter
+      editTask.addEventListener("keydown", (e) => {
+        if (e.keyCode === 13) { 
           const updatedTaskName = editTask.value;
           namePTask.innerText = updatedTaskName;
           task.name = updatedTaskName;
+          popup.classList.add("hide");
+        }
+      });
+
+      popup.addEventListener("click", (e) => {
+        if (e.target.classList.contains("popup")) {
           popup.classList.add("hide");
         }
       });
@@ -129,13 +154,14 @@ function createTasks() {
       tasks.splice(index, 1);
       taskElement.remove();
       updateCompletedTasks(); // Atualiza as tarefas concluídas
-      qtdTasks.innerText = tasks.length;
+      qtdTasks.innerText = tasks.filter((task) => !task.finished).length;
+      qtdFinishTasks.innerText = `${tasks.filter((task) => task.finished).length} de ${tasks.length}`;
+      updateTaskContainers(); // Atualiza os contêineres das tarefas
     });
   });
 
   updateCompletedTasks(); // Atualiza as tarefas concluídas
-
-  qtdTasks.innerText = tasks.length;
+  updateTaskContainers(); // Atualiza os contêineres das tarefas
 }
 
 toggleTasksBtn.addEventListener("click", () => {
@@ -144,7 +170,7 @@ toggleTasksBtn.addEventListener("click", () => {
 });
 
 function updateCompletedTasks() {
-  completedTasksContainer.innerHTML = ""; 
+  completedTasksContainer.innerHTML = "";
   const completedTasks = tasks.filter((task) => task.finished);
 
   completedTasks.forEach((task) => {
@@ -160,6 +186,19 @@ function updateCompletedTasks() {
       taskElement.remove();
       createTasks();
       updateCompletedTasks(); // Atualiza as tarefas concluídas
+      updateTaskContainers(); // Atualiza os contêineres das tarefas
+    });
+
+    // Event listener para excluir tarefa na seção de completedTasks
+    const trashIcon = taskElement.querySelector(".fa-trash");
+    trashIcon.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const index = tasks.indexOf(task);
+      tasks.splice(index, 1);
+      taskElement.remove();
+      updateCompletedTasks(); // Atualiza as tarefas concluídas
+      qtdFinishTasks.innerText = `${tasks.filter((task) => task.finished).length} de ${tasks.length}`;
+      updateTaskContainers(); // Atualiza os contêineres das tarefas
     });
   });
 
@@ -167,3 +206,4 @@ function updateCompletedTasks() {
 }
 
 createTasks(); // Cria as tarefas iniciais
+updateTaskContainers(); // Atualiza os contêineres das tarefas
