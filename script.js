@@ -130,6 +130,13 @@ function createTasks() {
       popup.classList.remove("hide");
       editTask.focus()
       // Event listener para confirmar a edição ao pressionar enter
+      const faSquareCheck = document.querySelector(".fa-square-check")
+      faSquareCheck.addEventListener("click", ()=>{
+        const updatedTaskName = editTask.value;
+        namePTask.innerText = updatedTaskName;
+        task.name = updatedTaskName;
+        popup.classList.add("hide");
+      })
       editTask.addEventListener("keydown", (e) => {
         if (e.keyCode === 13) { 
           const updatedTaskName = editTask.value;

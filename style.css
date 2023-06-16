@@ -245,3 +245,29 @@ body{
 .hide{
     display: none;
 }
+
+@media (max-width: 980px){
+    html{
+        font-size: 50%;
+    }
+    .not-task-img{
+        width: 40vw;
+    }
+}
+
+@media (max-width: 550px){
+    html{
+        font-size: 50%;
+    }
+
+}
+
+@media (max-width: 470px){
+    .not-task-img{
+        width: 60vw;
+    }
+    .container-span{
+        font-size: 2rem;
+        width: 80vw;
+    }
+}
