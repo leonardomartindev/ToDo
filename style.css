@@ -140,10 +140,11 @@ body{
     height: 3rem;
     border-radius: 50%;
     border: 3px solid var(--primary);
+    cursor: pointer;
 }
 
-.completed-cricle{
-    background-color: var(--primary);
+.completed-circle{
+    background: #282828;
 }
 .completed-text{
     text-decoration: line-through;
@@ -197,6 +198,31 @@ body{
 .popup i:hover{
     color: var(--primary-text);
 }
-    .hide{
-        display: none;
-    }
+
+.toggle-arrow{
+    transform: rotate(270deg);
+}
+.toggle-arrow-rotate{
+    transform: rotate(1deg);
+}
+.toggle-tasks{
+    margin-top: 5rem;
+    margin-bottom: 2rem;
+    cursor: pointer;
+    display: flex;
+    gap: 1rem;
+    font-size: 1.8rem;
+    color: var(--secondary);
+    font-weight: bold;
+}
+
+.completed-tasks{
+    width: 44vw;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    font-size: 2rem;
+}
+.hide{
+    display: none;
+}

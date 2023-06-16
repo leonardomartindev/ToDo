@@ -4,9 +4,11 @@ const addBtn = document.querySelector(".form-input-btn button");
 const qtdTasks = document.querySelector(".container-span .qtd-tasks");
 const qtdFinishTasks = document.querySelector(".container-span .qtd-finish-tasks");
 const tasksHtmlContainer = document.querySelector(".tasks");
-const popup = document.querySelector(".popup")
+const popup = document.querySelector(".popup");
+const completedTasksContainer = document.querySelector(".completed-tasks");
+const toggleArrow = document.querySelector(".toggle-arrow");
+const toggleTasksBtn = document.querySelector(".toggle-tasks");
 
-// const task = document.querySelector(".task");
 // Declaração de arrays que vai conter os objetos que serão cada uma das tasks
 const tasks = [];
 
@@ -70,41 +72,98 @@ function addTask(name, status) {
 function createTasks() {
   tasksHtmlContainer.innerHTML = ""; // Limpa o conteúdo anterior
 
-  tasks.forEach((task) => {
+  tasks.forEach((task, index) => {
     const taskElement = createTask(task.name);
-    tasksHtmlContainer.appendChild(taskElement);
+    if (task.finished) {
+      taskElement.querySelector(".circle").classList.add("completed-circle");
+      taskElement.querySelector(".circle-name-container").classList.add("completed-text");
+      taskElement.classList.add("hide");
+      completedTasksContainer.appendChild(taskElement);
+    } else {
+      tasksHtmlContainer.appendChild(taskElement);
+    }
+
+    // Event listener para marcar/desmarcar como concluída
+    const circle = taskElement.querySelector(".circle");
+    circle.addEventListener("click", () => {
+      task.finished = !task.finished;
+      taskElement.classList.toggle("hide");
+      circle.classList.toggle("completed-circle");
+      taskElement.querySelector(".circle-name-container").classList.toggle("completed-text");
+
+      if (task.finished) {
+        completedTasksContainer.appendChild(taskElement);
+      } else {
+        tasksHtmlContainer.appendChild(taskElement);
+      }
+
+      updateCompletedTasks(); // Atualiza as tarefas concluídas
+    });
+
+    // Event listener para editar tarefa
+    const editIcon = taskElement.querySelector(".fa-pen");
+    editIcon.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const editTask = document.querySelector("#edit-task");
+      const namePTask = taskElement.querySelector(".name-task");
+      editTask.value = namePTask.innerText;
+      popup.classList.remove("hide");
+      popup.addEventListener("click", (e) => {
+        if (e.target.classList.contains("popup")) {
+          popup.classList.add("hide");
+        }
+        if (e.target.classList.contains("fa-square-check")) {
+          const updatedTaskName = editTask.value;
+          namePTask.innerText = updatedTaskName;
+          task.name = updatedTaskName;
+          popup.classList.add("hide");
+        }
+      });
+    });
+
+    // Event listener para excluir tarefa
+    const trashIcon = taskElement.querySelector(".fa-trash");
+    trashIcon.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const index = tasks.indexOf(task);
+      tasks.splice(index, 1);
+      taskElement.remove();
+      updateCompletedTasks(); // Atualiza as tarefas concluídas
+      qtdTasks.innerText = tasks.length;
+    });
   });
-    const finishedTasks = tasks.filter(task => task.finished === true);
-    const finisheLength = finishedTasks.length;
-    qtdFinishTasks.innerText = `${finisheLength} de ${tasks.length}`
-    qtdTasks.innerText = tasks.length
+
+  updateCompletedTasks(); // Atualiza as tarefas concluídas
+
+  qtdTasks.innerText = tasks.length;
 }
 
+toggleTasksBtn.addEventListener("click", () => {
+  toggleArrow.classList.toggle("toggle-arrow-rotate");
+  completedTasksContainer.classList.toggle("hide");
+});
 
-document.addEventListener("click", (e) => {
-    const targetEl = e.target;
-    const parentEl = targetEl.closest("div")
-    
-    if(targetEl.classList.contains("circle")){
-        targetEl.classList.toggle("completed-cricle")
-        const nameTaskContainer = targetEl.closest(".circle-name-container")
-        nameTaskContainer.classList.toggle("completed-text")
-        const nameValue = nameTaskContainer.querySelector(".name-task").innerText
-        console.log(nameValue)
-    }
-    if(targetEl.classList.contains("fa-pen")){
-        const editTask = document.querySelector("#edit-task")
-        const divIcon = targetEl.closest("div")
-        const divTaskName = divIcon.previousElementSibling
-        editTask.value = divTaskName.querySelector("p").innerText 
-        popup.classList.remove("hide")
-        document.addEventListener("click", (e) =>{
-            if(e.target.classList.contains("popup")){
-                popup.classList.add("hide")
-            }
-            if(e.target.classList.contains("fa-square-check")){
-                console.log("")
-            }
-        })
-    }
-})
+function updateCompletedTasks() {
+  completedTasksContainer.innerHTML = ""; 
+  const completedTasks = tasks.filter((task) => task.finished);
+
+  completedTasks.forEach((task) => {
+    const taskElement = createTask(task.name);
+    taskElement.querySelector(".circle").classList.add("completed-circle");
+    taskElement.querySelector(".circle-name-container").classList.add("completed-text");
+    completedTasksContainer.appendChild(taskElement);
+
+    // Event listener para marcar/desmarcar como concluída na seção de completedTasks
+    const circle = taskElement.querySelector(".circle");
+    circle.addEventListener("click", () => {
+      task.finished = !task.finished;
+      taskElement.remove();
+      createTasks();
+      updateCompletedTasks(); // Atualiza as tarefas concluídas
+    });
+  });
+
+  qtdFinishTasks.innerText = `${completedTasks.length} de ${tasks.length}`;
+}
+
+createTasks(); // Cria as tarefas iniciais
