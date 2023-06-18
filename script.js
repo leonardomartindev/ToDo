@@ -8,15 +8,16 @@ const popup = document.querySelector(".popup");
 const completedTasksContainer = document.querySelector(".completed-tasks");
 const toggleArrow = document.querySelector(".toggle-arrow");
 const toggleTasksBtn = document.querySelector(".toggle-tasks");
-const notTaskContainer = document.querySelector(".not-task-container")
+const notTaskContainer = document.querySelector(".not-task-container");
 
 // Declaração de arrays que vai conter os objetos que serão cada uma das tasks
 const tasks = [];
 
 // função de criação de elementos da task
-function createTask(name) {
+function createTask(name, taskId) {
   const taskContainer = document.createElement("div");
   taskContainer.classList.add("task");
+  taskContainer.dataset.taskId = taskId;
 
   const circleContainer = document.createElement("div");
   circleContainer.classList.add("circle-name-container");
@@ -62,8 +63,9 @@ addBtn.addEventListener("click", (e) => {
 
 function addTask(name, status) {
   const newTask = {
+    id: Date.now(),
     name: name,
-    finished: status || false
+    finished: status || false,
   };
   tasks.push(newTask);
   createTasks();
@@ -87,10 +89,12 @@ function createTasks() {
   qtdTasks.innerText = unfinishedTasks.length; // Atualiza a contagem de tarefas não concluídas
 
   tasks.forEach((task) => {
-    const taskElement = createTask(task.name);
+    const taskElement = createTask(task.name, task.id);
     if (task.finished) {
       taskElement.querySelector(".circle").classList.add("completed-circle");
-      taskElement.querySelector(".circle-name-container").classList.add("completed-text");
+      taskElement
+        .querySelector(".circle-name-container")
+        .classList.add("completed-text");
       taskElement.classList.add("hide");
       completedTasksContainer.appendChild(taskElement);
     } else {
@@ -104,16 +108,22 @@ function createTasks() {
       task.finished = !task.finished;
       taskElement.classList.toggle("hide");
       circle.classList.toggle("completed-circle");
-      taskElement.querySelector(".circle-name-container").classList.toggle("completed-text");
+      taskElement
+        .querySelector(".circle-name-container")
+        .classList.toggle("completed-text");
 
       if (task.finished) {
         completedTasksContainer.appendChild(taskElement);
         qtdTasks.innerText = parseInt(qtdTasks.innerText) - 1;
-        qtdFinishTasks.innerText = `Concluídas ${tasks.filter((task) => task.finished).length} de ${tasks.length}`;
+        qtdFinishTasks.innerText = `Concluídas ${tasks.filter(
+          (task) => task.finished
+        ).length} de ${tasks.length}`;
       } else {
         tasksHtmlContainer.appendChild(taskElement);
         qtdTasks.innerText = parseInt(qtdTasks.innerText) + 1;
-        qtdFinishTasks.innerText = `${tasks.filter((task) => task.finished).length} de ${tasks.length}`;
+        qtdFinishTasks.innerText = `${tasks.filter(
+          (task) => task.finished
+        ).length} de ${tasks.length}`;
       }
 
       updateCompletedTasks(); // Atualiza as tarefas concluídas
@@ -128,21 +138,29 @@ function createTasks() {
       const namePTask = taskElement.querySelector(".name-task");
       editTask.value = namePTask.innerText;
       popup.classList.remove("hide");
-      editTask.focus()
+      editTask.focus();
+
+      // Remover evento de clique anterior do ícone de confirmação de edição
+      const faSquareCheck = document.querySelector(".fa-square-check");
+      faSquareCheck.removeEventListener("click", confirmEdit);
+
       // Event listener para confirmar a edição ao pressionar enter
-      const faSquareCheck = document.querySelector(".fa-square-check")
-      faSquareCheck.addEventListener("click", ()=>{
+      function confirmEdit() {
         const updatedTaskName = editTask.value;
         namePTask.innerText = updatedTaskName;
         task.name = updatedTaskName;
         popup.classList.add("hide");
-      })
+
+        // Remover evento de clique do ícone de confirmação de edição
+        faSquareCheck.removeEventListener("click", confirmEdit);
+      }
+
+      // Adicionar evento de clique ao ícone de confirmação de edição
+      faSquareCheck.addEventListener("click", confirmEdit);
+
       editTask.addEventListener("keydown", (e) => {
-        if (e.keyCode === 13) { 
-          const updatedTaskName = editTask.value;
-          namePTask.innerText = updatedTaskName;
-          task.name = updatedTaskName;
-          popup.classList.add("hide");
+        if (e.keyCode === 13) {
+          confirmEdit();
         }
       });
 
@@ -157,12 +175,15 @@ function createTasks() {
     const trashIcon = taskElement.querySelector(".fa-trash");
     trashIcon.addEventListener("click", (e) => {
       e.stopPropagation();
-      const index = tasks.indexOf(task);
+      const taskId = parseInt(taskElement.dataset.taskId);
+      const index = tasks.findIndex((task) => task.id === taskId);
       tasks.splice(index, 1);
       taskElement.remove();
       updateCompletedTasks(); // Atualiza as tarefas concluídas
       qtdTasks.innerText = `${tasks.filter((task) => !task.finished).length}`;
-      qtdFinishTasks.innerText = `Concluídas ${tasks.filter((task) => task.finished).length} de ${tasks.length}`;
+      qtdFinishTasks.innerText = `Concluídas ${tasks.filter(
+        (task) => task.finished
+      ).length} de ${tasks.length}`;
       updateTaskContainers(); // Atualiza os contêineres das tarefas
     });
   });
@@ -183,7 +204,9 @@ function updateCompletedTasks() {
   completedTasks.forEach((task) => {
     const taskElement = createTask(task.name);
     taskElement.querySelector(".circle").classList.add("completed-circle");
-    taskElement.querySelector(".circle-name-container").classList.add("completed-text");
+    taskElement
+      .querySelector(".circle-name-container")
+      .classList.add("completed-text");
     completedTasksContainer.appendChild(taskElement);
 
     // Event listener para marcar/desmarcar como concluída na seção de completedTasks
@@ -200,11 +223,14 @@ function updateCompletedTasks() {
     const trashIcon = taskElement.querySelector(".fa-trash");
     trashIcon.addEventListener("click", (e) => {
       e.stopPropagation();
-      const index = tasks.indexOf(task);
+      const taskId = parseInt(taskElement.dataset.taskId);
+      const index = tasks.findIndex((task) => task.id === taskId);
       tasks.splice(index, 1);
       taskElement.remove();
       updateCompletedTasks(); // Atualiza as tarefas concluídas
-      qtdFinishTasks.innerText = `${tasks.filter((task) => task.finished).length} de ${tasks.length}`;
+      qtdFinishTasks.innerText = `${tasks.filter(
+        (task) => task.finished
+      ).length} de ${tasks.length}`;
       updateTaskContainers(); // Atualiza os contêineres das tarefas
     });
   });
