@@ -242,3 +242,38 @@ main{
 .hide{
     display: none;
 }
+
+@media (max-width: 800px){
+    html{
+        font-size: 48%;
+    }
+    .not-task-img{
+        width: 50vw;
+    }
+    .not-task-container{
+        font-size: 1.6rem;
+    }
+}
+
+@media (max-width: 630px){
+
+    .form input{
+        font-size: 2.5rem;
+        height: 7vh;
+    }
+    .form button{
+        width: 8vw;
+        height: 7vh;
+    }
+}
+
+@media (max-width: 630px){
+
+    nav h1{
+        font-size: 3.8rem;
+    }
+    .form input{
+        width: 55vw;
+    }
+
+}
