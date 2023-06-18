@@ -5,46 +5,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- <link rel="stylesheet" href="style.css"> -->
     <link rel="stylesheet" href="style.css">
-    <title>To Do site</title>
+    <title>To Do list</title>
 </head>
 <body>
-    <div class="top-bar"></div>
-    <div class="container-main">
-            <form class="form-input-btn">
-                <input class="input-task" type="text" placeholder="Adicionar uma tarefa">
-                <button type="submit"><i class="fa-solid fa-plus"></i></button>
-            </form>
-            <div class="main-content-container">
+    <nav>
+        <h1>Lista de Tarefas</h1>
+        <form class="form">
+            <input type="text" class="input-task" placeholder="Adicionar uma tarefa">
+            <button type="submit"><i class="fa-solid fa-plus"></i></button>
+        </form>
+    </nav>
+    <main>
+        <div class="container-main">
 
-                <div class="container-span">
-                    <p >Tarefas criadas <span class="qtd-tasks">0</span></p>
-                    <p >Tarefas concluídas <span class="qtd-finish-tasks">0 de 0</span></p>
-                </div>
-                <div class="tasks">
+        <div class="container-qtd">
+            <p class="qtd-tasks"><span class="qtd-span">0</span></p>
+            <p class="qtd-finish-tasks">Concluídas <span class="qtd-finish-span"> 0 de 0</span></p>
+        </div>
+        <div class="tasks">
                     
-                </div>
-            </div>
-            <div class="not-task-container">
-                <img src="images/not tasks.svg" class="not-task-img" alt="">
-                <h1>Você ainda não adicionou tarefas</h1>
-                <h2>Crie tarefas e comece a organizar</h2>
-            </div>
-
-            <div class="toggle-tasks hide">
-                <i class="fa-solid fa-caret-down toggle-arrow"></i>
-                <p> Mostrar Tarefas Concluídas</p>
-            </div>
-            <div class="completed-tasks hide">
-            </div>
-            
+        </div>
+        <div class="not-task-container">
+            <img src="images/not tasks.svg" class="not-task-img" alt="">
+            <h1>Você ainda não adicionou tarefas</h1>
+            <h2>Crie tarefas e comece a organizar</h2>
+        </div>
+        <div class="toggle-tasks hide">
+            <i class="fa-solid fa-caret-down toggle-arrow"></i>
+            <p> Mostrar Tarefas Concluídas</p>
+        </div>
+        <div class="completed-tasks hide">
         </div>
         <div class="popup hide">
             <div class="popup-container">
-                <input id="edit-task" type="text" value="oioaioio">
+                <input id="edit-task" type="text">
                 <i class="fa-solid fa-square-check"></i>
             </div>
         </div>
+    </div>
+
+    </main>
     <script src="script.js"></script>
+
 </body>
 </html>

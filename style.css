@@ -16,7 +16,6 @@ html{
     --linear: linear-gradient(90deg, #232323 0.66%, #292929 100%, rgba(0, 0, 0, 0.48) 99.1%);
     --background: #444444;
     --primary-text: #7C7C7C ;
-    --span: #93b9ff;
 }
 
 
@@ -24,97 +23,94 @@ body{
     background-color: var(--background);
 }
 
-.top-bar{
-    position: relative;
-    background: var(--linear);
-    width: 100vw;
-    height: 20vh;
-    border-bottom: 5px solid rgb(24, 24, 24);
+nav{
+    background-color: var(--primary);
+    height: 15vh;
+    color: var(--secondary);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
 }
 
-.container-main{
-    display: flex;
-    /* background-color: red; */
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+nav h1{
+    font-size: 4.5rem;
 }
-.form-input-btn{
-    position: absolute;
+
+.form{
     display: flex;
-    /* width: 100vw; */
-    /* justify-content: center; */
-    top: 12rem;
-    gap: 1rem;
     
 }
 
-.form-input-btn input{
-    background-color: var(--secondary);
+.form input{
+    font-size: 3rem;
     border: none;
-    font-size: 2.4rem;
-    width: 40vw;
-    padding: 1rem 1.5rem;
-    border-radius: 4px;
-    color: var(--primary);
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
     outline: none;
+    width: 40vw;
+    padding-left: 15px;
 }
 
-.form-input-btn input::placeholder{
-    color: var(--primary);
-    font-weight: 500;
-}
-
-
-.form-input-btn button{
-    width: 4.5rem;
+.form button{
+    font-size: 3rem;
+    width: 4vw;
     border: none;
-    font-size: 2rem;
-    border-radius: 4px;
-    color: var(--span);
-    /* background-color: var(--secondary); */
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
     background-color: #0077b6;
+    color: var(--span);
     cursor: pointer;
     transition: 200ms all ease;
 }
 
-.form-input-btn button:hover{
-    border: 1px solid #000000;
-    background-color: #2b2b2b;
+.form button:hover{
+    border: 1px solid #a5c3fa;
+    background-color: #a5c3fa;
     color: #3e64aa;
 }
 
-.main-content-container{
-    /* background-color: blue; */
-    width: 44vw;
-    
-}
-
-.container-span{
-    color: var(--span);
-    font-weight: bold;
-    font-size: 1.8rem;
-    margin-top: 5rem;
-    display: flex;
-    justify-content: space-between;
-    padding: 0 1rem;
-    padding-bottom: 5rem;
-    flex-wrap: wrap;
-    gap: 1rem;
-}
-
-.container-span span{
-    background-color: var(--secondary);
-    padding: .5rem;
-    border-radius: 18px;
+.form input::placeholder{
     color: var(--primary);
+    font-weight: 500;
 }
+
+.form input, .form button{
+    height: 8vh;
+}
+
+main{
+    display: flex;
+    justify-content: center;
+}
+
+.container-main{
+    width: 80vw;
+
+}
+
+.container-qtd{
+    font-weight: bolder;
+    margin: 3rem 0;
+    display: flex;
+    justify-content:space-between;
+    font-size: 3rem;
+}
+
+.qtd-tasks, .qtd-finish-tasks{
+    background-color: var(--secondary);
+    color: var(--primary);
+    padding: .5rem 1rem;
+    border-radius: 10px;
+}
+
+
 
 .tasks{
     display: flex;
     flex-direction: column;
     align-items: center;
-    font-size: 2rem;
+    font-size: 2.8rem;
     gap: 2rem;
 }
 
@@ -122,11 +118,12 @@ body{
     display: flex;
     justify-content: space-between;
     background-color: var(--secondary);
-    width: 100%;
+    width: 80vw;
     padding: 0.7rem 1.5rem;
     border-radius: 4px;
     font-style: italic;
     position: relative;
+    height: 9vh;
 }
 
 .circle-name-container{
@@ -136,8 +133,8 @@ body{
 }
 
 .circle{
-    width: 3rem;
-    height: 3rem;
+    width: 4.5rem;
+    height: 4.5rem;
     border-radius: 50%;
     border: 3px solid var(--primary);
     cursor: pointer;
@@ -153,9 +150,9 @@ body{
 
 .icon{
     display: flex;
-    gap: 2rem;
+    gap: 2.5rem;
     align-items: center;
-    font-size: 3rem;
+    font-size: 4rem;
     color: var(--primary);
     cursor: pointer;
 }
@@ -217,7 +214,7 @@ body{
 }
 
 .completed-tasks{
-    width: 44vw;
+    align-items: center;
     display: flex;
     flex-direction: column;
     gap: 2rem;
@@ -236,7 +233,7 @@ body{
 
 .not-task-img{
     /* background-color: red; */
-    width: 28vw;
+    width: 35vw;
     height: auto;
     background-color: var(--primary);
     border-radius: 20px;
@@ -244,30 +241,4 @@ body{
 
 .hide{
     display: none;
-}
-
-@media (max-width: 980px){
-    html{
-        font-size: 50%;
-    }
-    .not-task-img{
-        width: 40vw;
-    }
-}
-
-@media (max-width: 550px){
-    html{
-        font-size: 50%;
-    }
-
-}
-
-@media (max-width: 470px){
-    .not-task-img{
-        width: 60vw;
-    }
-    .container-span{
-        font-size: 2rem;
-        width: 80vw;
-    }
 }

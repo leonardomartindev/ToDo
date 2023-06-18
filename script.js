@@ -1,8 +1,8 @@
 // Seleção de principais elementos visuais
-const input = document.querySelector(".form-input-btn input");
-const addBtn = document.querySelector(".form-input-btn button");
-const qtdTasks = document.querySelector(".container-span .qtd-tasks");
-const qtdFinishTasks = document.querySelector(".container-span .qtd-finish-tasks");
+const input = document.querySelector(".form input");
+const addBtn = document.querySelector(".form button");
+const qtdTasks = document.querySelector(".container-qtd .qtd-tasks");
+const qtdFinishTasks = document.querySelector(".container-qtd .qtd-finish-tasks");
 const tasksHtmlContainer = document.querySelector(".tasks");
 const popup = document.querySelector(".popup");
 const completedTasksContainer = document.querySelector(".completed-tasks");
@@ -109,7 +109,7 @@ function createTasks() {
       if (task.finished) {
         completedTasksContainer.appendChild(taskElement);
         qtdTasks.innerText = parseInt(qtdTasks.innerText) - 1;
-        qtdFinishTasks.innerText = `${tasks.filter((task) => task.finished).length} de ${tasks.length}`;
+        qtdFinishTasks.innerText = `Concluídas ${tasks.filter((task) => task.finished).length} de ${tasks.length}`;
       } else {
         tasksHtmlContainer.appendChild(taskElement);
         qtdTasks.innerText = parseInt(qtdTasks.innerText) + 1;
@@ -161,8 +161,8 @@ function createTasks() {
       tasks.splice(index, 1);
       taskElement.remove();
       updateCompletedTasks(); // Atualiza as tarefas concluídas
-      qtdTasks.innerText = tasks.filter((task) => !task.finished).length;
-      qtdFinishTasks.innerText = `${tasks.filter((task) => task.finished).length} de ${tasks.length}`;
+      qtdTasks.innerText = `${tasks.filter((task) => !task.finished).length}`;
+      qtdFinishTasks.innerText = `Concluídas ${tasks.filter((task) => task.finished).length} de ${tasks.length}`;
       updateTaskContainers(); // Atualiza os contêineres das tarefas
     });
   });
@@ -209,7 +209,7 @@ function updateCompletedTasks() {
     });
   });
 
-  qtdFinishTasks.innerText = `${completedTasks.length} de ${tasks.length}`;
+  qtdFinishTasks.innerText = `Concluídas: ${completedTasks.length} de ${tasks.length}`;
 }
 
 createTasks(); // Cria as tarefas iniciais
